@@ -1,24 +1,55 @@
 * {
-    font-family: sans-serif;
+  font-family: sans-serif;
+}
 
+nav {
+  position: sticky;
+  top: 0;
 }
 
 nav ul{
-  position: sticky;
+  
+  align-items: center;
   display: flex;
-  top: 10px;
-  right: 50%;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 720px;
+  
+
+  
 }
 
 nav li {
+  
+
+  
   cursor: pointer;
-  position: relative;
-  margin-left: -1px;
+  
+  margin: 10px;
   text-transform: uppercase;
-  border: 1px solid #000;
-  color: #000;
+  
   font-size: 13px;
-  background-color: #fff;
+  
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  
+  width: 100px;
+  height: 100px;
+  /*BLUE BG stolen */
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 128, 172, 1) 0%,
+    rgba(0, 128, 172, 1) 70%,
+    rgba(0, 128, 172, 0) 70.3%
+  );
+  
 }
+
+nav a {
+  text-decoration: none;
+  color: #FFF;
+}
+
