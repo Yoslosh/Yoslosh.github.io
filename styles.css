@@ -26,6 +26,7 @@ h1::before {
 nav {
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 nav ul{
@@ -35,7 +36,7 @@ nav ul{
   justify-content: space-between;
   margin: 0 auto;
   max-width: 100%;
-  width: 720px;
+  width: 1080px;
   
 
   
@@ -57,8 +58,8 @@ nav a {
   text-decoration: none;
   color: #242424;
 
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   /*BLUE BG stolen */
   background: radial-gradient(
     ellipse at center,
