@@ -14,10 +14,11 @@ h1 {
   
 }
 
-h1::before {
+body::before {
   content: url(Moon.svg);
   display:list-item;
   color: white;
+  margin: -100px;
   transform: scale(0.75);
   list-style: none;
 }
@@ -27,6 +28,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 1;
+  margin: 40px 0 160px;
 }
 
 nav ul{
@@ -68,5 +70,9 @@ nav a {
     rgba(244, 244, 244, 1) 70%,
     rgba(0, 128, 172, 0) 70.3%
   );
+  transition: all 0.5s;
 }
 
+nav a:hover {
+  transform: scale(1.2);
+}
