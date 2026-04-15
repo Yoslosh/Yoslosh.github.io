@@ -1,28 +1,32 @@
 * {
   font-family: sans-serif;
   text-align: center;
-  color:white;
+  color: white;
 }
 
 body {
-  background: linear-gradient(#242424 60%,#999)
+  background-image: 
+  linear-gradient(#242424 60%, transparent),
+  url(Middle.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 h1 {
   font-size: 6em;
   margin-top: -0.5em;
-  
 }
 
 body::before {
   content: url(Moon.svg);
-  display:list-item;
+  display: list-item;
   color: white;
   margin: -100px;
+  margin-top: 50px;
   transform: scale(0.75);
   list-style: none;
 }
-
 
 nav {
   position: sticky;
@@ -31,8 +35,7 @@ nav {
   margin: 40px 0 160px;
 }
 
-nav ul{
-  
+nav ul {
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -40,24 +43,31 @@ nav ul{
   padding-left: 0;
   max-width: 100%;
   width: 1080px;
-  
-
-  
 }
 
 nav li {
   margin: 10px;
   text-transform: uppercase;
-  
+
   font-size: 13px;
   display: flex;
+
+
+
+}
+
+
+
+@property --translateF {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: true;
 }
 
 nav a {
   display: flex;
   align-items: center;
   justify-content: center;
-  
   text-decoration: none;
   color: #242424;
 
@@ -71,8 +81,77 @@ nav a {
     rgba(0, 128, 172, 0) 70.3%
   );
   transition: all 0.5s;
+
+
+  /* 
+    translateF 0-1
+  */
+  --translateF: 0;
+  --translateX: 0px;
+  --translateY: 0px;
+  --dependX: calc(var(--translateX)*var(--translateF));
+  --dependY: calc(var(--translateY)*var(--translateF));
+
+  translate: var(--dependX) var(--dependY);
+
+
+
+  animation-name: scrollReturn;
+  animation-timing-function: linear;
+  animation-duration: 1s;
+  animation-timeline: view();
+
+}
+
+nav a[href="#welcome"] {
+  --translateY: -500px;
+}
+
+nav a[href="#projects"] {
+  --translateY: -100px;
+}
+
+nav a[href="#socialMedia"] {
+  --translateY: -800px;
+}
+
+nav a[href="#achievements"] {
+  --translateY: -100px;
+}
+
+nav a[href="#profile"] {
+  
+  --translateY: -500px;
+}
+
+
+@keyframes scrollReturn {
+    from {
+      --translateF: 1;
+    
+    }
+    13% {
+      --translateF: 1;
+
+    }
+    70% {
+      --translateF: 0;
+
+    }
+
+    to  {
+      --translateF: 0;
+      
+    }
 }
 
 nav a:hover {
   transform: scale(1.2);
+  
+
+}
+
+
+#extend {
+  height: 1000px;
 }
