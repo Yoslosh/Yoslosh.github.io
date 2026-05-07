@@ -5,62 +5,110 @@
 }
 
 body {
-  background-image: 
-  linear-gradient(#242424 60%, transparent),
-  url(Middle.svg);
-  background-size: contain;
+  background-image: linear-gradient(#242424 60%, transparent);
+  margin: 0;
+}
+.mountainBG {
+  height: 1080px;
+  background-image: url(Middle.svg);
+  background-size: 1920px 1080px;
   background-repeat: no-repeat;
-  background-position: bottom;
+  
 }
 
+.road {
+  transform-origin: 50% 50%;
+  transform: perspective(800px) translate3d(0px, 142px, 200px) rotate3d(1, 0, 0, 90deg);
+}
 h1 {
   font-size: 6em;
   margin-top: -0.5em;
 }
-
-body::before {
-  content: url(Moon.svg);
-  display: list-item;
-  color: white;
-  margin: -100px;
-  margin-top: 50px;
-  transform: scale(0.75);
-  list-style: none;
+.moon {
+  display: flex;
+  justify-content: center;
+  height: 900px;
+}
+.moon img {
+  --fixed: fixed;
+  position: var(--fixed);
+  z-index: 1;
+  --moonY: 0px;
+  translate: 0px var(--moonY);
+  animation-name: unfix_orbit; /*unfix_orbit */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-timeline: scroll();
+}
+.void {
+  height: 2500px;
 }
 
+
+
 nav {
-  position: sticky;
+  display:flex;
+  position:relative;
   top: 0;
-  z-index: 1;
-  margin: 40px 0 160px;
+  
+  margin: 40px 0px 160px;
+  align-items: center;
+  z-index: auto;
 }
 
 nav ul {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 auto;
   padding-left: 0;
   max-width: 100%;
-  width: 1080px;
+  width: 150px;
+  z-index: auto;
+
+  animation-name: reversion; /*reversion*/
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-timeline: scroll();
+}
+
+
+@property --shrink {
+  syntax: '<number>';
+  initial-value: 1;
+  inherits: true;
+}
+@property --undoY {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: true;
 }
 
 nav li {
-  margin: 10px;
+  
   text-transform: uppercase;
-
   font-size: 13px;
   display: flex;
+  justify-content: center;
+  width: 0px;
+  height: 150px;
+  --shrink: 1;
+  --pausedOrbit: running;
+  --undoY: 0px;
 
-
+  animation-name: unfix_orbit;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-timeline: scroll();
+  
 
 }
 
 
 
-@property --translateF {
-  syntax: '<number>';
-  initial-value: 0;
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
   inherits: true;
 }
 
@@ -81,72 +129,131 @@ nav a {
     rgba(0, 128, 172, 0) 70.3%
   );
   transition: all 0.5s;
-
-
-  /* 
-    translateF 0-1
-  */
-  --translateF: 0;
-  --translateX: 0px;
-  --translateY: 0px;
-  --dependX: calc(var(--translateX)*var(--translateF));
-  --dependY: calc(var(--translateY)*var(--translateF));
-
-  translate: var(--dependX) var(--dependY);
-
-
-
-  animation-name: scrollReturn;
-  animation-timing-function: linear;
-  animation-duration: 1s;
-  animation-timeline: view();
-
-}
-
-nav a[href="#welcome"] {
-  --translateY: -500px;
-}
-
-nav a[href="#projects"] {
-  --translateY: -100px;
-}
-
-nav a[href="#socialMedia"] {
-  --translateY: -800px;
-}
-
-nav a[href="#achievements"] {
-  --translateY: -100px;
-}
-
-nav a[href="#profile"] {
+  position: fixed;
   
-  --translateY: -500px;
+  
+  --angleOffset: 0deg;
+  --lowerY: calc(400px*(1 - var(--shrink)) + var(--undoY));
+  --finalOffset: calc(var(--angle) + var(--angleOffset));
+  --x-amplitude: calc(600px*var(--shrink));
+  --y-amplitude: calc(-90px*var(--shrink));
+  --x: calc(cos(var(--finalOffset)) * var(--x-amplitude));
+  --y: calc(sin(var(--finalOffset)) * var(--y-amplitude));
+  --scale: calc((sin(var(--finalOffset))/-4 - .15)*var(--shrink) + 1);
+  transform:
+    scale(var(--scale))
+    translate(var(--x), calc(var(--y) + var(--lowerY)));
+  z-index: calc(sin(var(--finalOffset))/-2 + 0.5);
+
+  
+  animation-name: orbit_and_sway;
+  animation-timing-function: linear;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-play-state: var(--pausedOrbit);
+  /* animation-timeline: view(); */
+
+}
+
+.orb1 {
+  --angleOffset: 0deg;
+}
+
+.orb2 {
+  --angleOffset: 72deg;
+}
+
+.orb3 {
+  --angleOffset: 144deg;
+}
+
+.orb4 {
+  --angleOffset: 216deg;
+}
+
+.orb5 {
+  --angleOffset: 288deg;
 }
 
 
-@keyframes scrollReturn {
+@keyframes orbit_and_sway {
     from {
-      --translateF: 1;
-    
-    }
-    13% {
-      --translateF: 1;
-
-    }
-    70% {
-      --translateF: 0;
-
+      --angle: 0deg;
     }
 
     to  {
-      --translateF: 0;
-      
+      --angle: 360deg;
     }
 }
 
+@keyframes unfix_orbit {
+  from {
+    --pausedOrbit: running;
+    --fixed: fixed;
+    --shrink: 1;
+    --moonY: 0px;
+    --undoY: 0px;
+  }
+
+  1% {
+    --fixed: fixed;
+    --shrink: 1;
+    --moonY: 0px;
+  }
+
+  25% {
+    --undoY: 0px;
+  }
+
+  35% {
+    --shrink: 0;
+  }
+
+  50% {
+    --pausedOrbit: paused;
+    --fixed: absolute;
+    --shrink: 0;
+    --moonY: 1050px;
+    --undoY: -675px;
+  }
+  99%{
+    
+  }
+
+  to {
+    --fixed: absolute;
+    --shrink: 0;
+    --moonY: 1650px;
+    --undoY: -675px;
+  }
+}
+
+@keyframes reversion {
+  from {
+    width: 150px;
+    justify-content: center;
+  }
+
+  35% { 
+    width:150px;
+  }
+
+  80% {
+    width: 1080px;
+    justify-content: space-between;
+  }
+
+  to {
+    width: 1080px;
+    justify-content: space-between;
+
+  }
+}
+
+
+
 nav a:hover {
-  transform: scale(1.2);
+  
   
 
 }
